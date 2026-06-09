@@ -60,6 +60,32 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudnativepg-barman-plugin
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    chart: plugin-barman-cloud
+    repoURL: https://cloudnative-pg.github.io/charts
+    targetRevision: 0.6.0
+    helm:
+      releaseName: plugin-barman-cloud
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cnpg-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+---
 # databases/postgres/production-cluster.yaml
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
@@ -98,11 +124,11 @@ spec:
       max_wal_size: 2GB
 
   # Automated backup configuration
-  # plugins:
-  #   - name: barman-cloud.cloudnative-pg.io
-  #     isWALArchiver: true
-  #     parameters:
-  #       barmanObjectName: production-db-backups
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: production-db-backups
 
   # High availability settings
   minSyncReplicas: 1
