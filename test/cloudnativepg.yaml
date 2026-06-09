@@ -59,3 +59,56 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+---
+# databases/postgres/production-cluster.yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: production-db
+  namespace: databases
+spec:
+  instances: 2
+
+  # PostgreSQL version
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.14
+
+  # Storage configuration
+  storage:
+    size: 1Gi
+    storageClass: gp3-encrypted
+
+  # Resource allocation
+  # resources:
+  #   requests:
+  #     memory: 2Gi
+  #     cpu: "1"
+  #   limits:
+  #     memory: 4Gi
+  #     cpu: "2"
+
+  # PostgreSQL configuration
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 1GB
+      effective_cache_size: 3GB
+      work_mem: 16MB
+      maintenance_work_mem: 256MB
+      wal_buffers: 16MB
+      max_wal_size: 2GB
+
+  # Automated backup configuration
+  # plugins:
+  #   - name: barman-cloud.cloudnative-pg.io
+  #     isWALArchiver: true
+  #     parameters:
+  #       barmanObjectName: production-db-backups
+
+  # High availability settings
+  minSyncReplicas: 1
+  maxSyncReplicas: 1
+
+  # Pod anti-affinity for spreading across nodes
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
