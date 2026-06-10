@@ -12,7 +12,9 @@ chmod 600 ~/.kube/config
 kubectl cluster-info
 
 kubectl create namespace argocd
+kubectl apply --server-side -k https://github.com/jacokok/argo-test.git/bootstrap
 
-kubectl apply -k "https://github.com/jacokok/argo-test.git//bootstrap"
+# Get default password
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
-kubectl apply -f https://raw.githubusercontent.com/YOUR_USERNAME/k3s-gitops/main/apps/argocd.yaml
+kubectl apply -f https://raw.githubusercontent.com/jacokok/argo-test/refs/heads/main/apps/argocd.yaml
