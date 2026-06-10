@@ -8,9 +8,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: "https://github.com/cloudnative-pg/cloudnative-pg"
-    targetRevision: "release-1.23" # Pinning to a stable release branch
-    path: config/samples/
+    repoURL: "https://github.com/cloudnative-pg/artifacts.git"
+    targetRevision: "release-1.23"
+    path: manifests/
   destination:
     server: "https://kubernetes.default.svc"
     namespace: cnpg-system # The operator runs in its own namespace
