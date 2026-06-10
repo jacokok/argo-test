@@ -1,12 +1,16 @@
-# infra/postgres/cluster.yaml
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: basic-postgres
   namespace: default
 spec:
-  instances: 1 # A single instance is perfect for local testing/dev
+  instances: 1
 
-  # Configuration for the primary database engine
+  # Explicitly defining the primary bootstrap database parameters
+  bootstrap:
+    initdb:
+      database: app
+      owner: app
+
   storage:
-    size: 1Gi # k3s will automatically provision this via its local-path storage class
+    size: 1Gi
