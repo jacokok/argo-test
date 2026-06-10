@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: postgres-db
   namespace: argocd
+  annotations:
+    # 👇 This forces it to wait until wave 0/1 are done
+    argocd.argoproj.io/sync-wave: "5"
   finalizers:
     - argoproj.io/resources-finalizer
 spec:
