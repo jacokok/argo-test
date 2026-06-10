@@ -25,4 +25,4 @@ spec:
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
-    # automated: {} # Uncomment for auto-sync
+    automated: {} # Uncomment for auto-sync
