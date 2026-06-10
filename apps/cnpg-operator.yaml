@@ -18,6 +18,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    createNamespace: true # Argo will automatically create the cnpg-system namespace
     syncOptions:
       - ServerSideApply=true # Crucial for large Operator CRDs
+      - CreateNamespace=true
