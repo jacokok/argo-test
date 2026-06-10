@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cnpg-operator
+  namespace: argocd
+  finalizers:
+    - argoproj.io/resources-finalizer
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/cloudnative-pg/cloudnative-pg"
+    targetRevision: "release-1.23" # Pinning to a stable release branch
+    path: config/samples/
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: cnpg-system # The operator runs in its own namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    createNamespace: true # Argo will automatically create the cnpg-system namespace
+    syncOptions:
+      - ServerSideApply=true # Crucial for large Operator CRDs

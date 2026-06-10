@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-db
+  namespace: argocd
+  finalizers:
+    - argoproj.io/resources-finalizer
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/jacokok/argo-test"
+    targetRevision: HEAD
+    path: infra/postgres # 👈 We will create this directory for the DB layout
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: default # Where your applications can reach the DB
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
