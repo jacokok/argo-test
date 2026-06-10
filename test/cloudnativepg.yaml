@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: cloudnative-pg
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1" # <--- Wave 1: Installs first
 spec:
   project: default
   source:
@@ -23,7 +25,9 @@ kind: Cluster
 metadata:
   name: my-postgresql
   namespace: cnpg-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "2" # <--- Wave 2: Waits for Wave 1 to finish
 spec:
-  instances: 3 # Creates a highly available 3-node cluster
+  instances: 3
   storage:
-    size: 1Gi # k3s will automatically provision this using its default local-path storage
+    size: 1Gi
