@@ -1,39 +1,39 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: cloudnative-pg-operator
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
-  project: cloudnativepg-project
-  source:
-    path: releases/
-    repoURL: https://github.com/cloudnative-pg/cloudnative-pg.git
-    targetRevision: main
-    directory:
-      recurse: false
-      include: "cnpg-1.26.0.yaml"
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - ServerSideApply=true
-      - ApplyOutOfSyncOnly=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: cloudnative-pg-operator
+#   namespace: argocd
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   destination:
+#     namespace: argocd
+#     server: https://kubernetes.default.svc
+#   project: cloudnativepg-project
+#   source:
+#     path: releases/
+#     repoURL: https://github.com/cloudnative-pg/cloudnative-pg.git
+#     targetRevision: main
+#     directory:
+#       recurse: false
+#       include: "cnpg-1.26.0.yaml"
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - ServerSideApply=true
+#       - ApplyOutOfSyncOnly=true
 
----
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: my-postgres-cluster
-  namespace: postgres-db
-spec:
-  instances: 2 # Number of database instances
-  primaryUpdateMethod: switchover # Update strategy for the primary node
-  storage:
-  size: 1Gi # Storage size for persistent volumes
-  # storageClass: longhorn
+# ---
+# apiVersion: postgresql.cnpg.io/v1
+# kind: Cluster
+# metadata:
+#   name: my-postgres-cluster
+#   namespace: postgres-db
+# spec:
+#   instances: 2 # Number of database instances
+#   primaryUpdateMethod: switchover # Update strategy for the primary node
+#   storage:
+#   size: 1Gi # Storage size for persistent volumes
+#   # storageClass: longhorn
