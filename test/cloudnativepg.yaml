@@ -1,140 +1,39 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cloudnativepg-operator
+  name: cloudnative-pg-operator
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
-  source:
-    chart: cloudnative-pg
-    repoURL: https://cloudnative-pg.github.io/charts
-    targetRevision: 0.28.2
-    helm:
-      releaseName: cloudnative-pg
-      values: |
-        # Number of operator replicas for HA
-        replicaCount: 2
-        # Resource limits for the operator pods
-        resources:
-          limits:
-            memory: 256Mi
-            cpu: 200m
-          requests:
-            memory: 128Mi
-            cpu: 100m
-        # Enable monitoring
-        monitoring:
-          podMonitorEnabled: true
   destination:
+    namespace: argocd
     server: https://kubernetes.default.svc
-    namespace: cnpg-system
+  project: cloudnativepg-project
+  source:
+    path: releases/
+    repoURL: https://github.com/cloudnative-pg/cloudnative-pg.git
+    targetRevision: main
+    directory:
+      recurse: false
+      include: "cnpg-1.26.0.yaml"
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
       - ServerSideApply=true
+      - ApplyOutOfSyncOnly=true
 
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: postgres-clusters
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/your-org/k8s-manifests.git
-    targetRevision: main
-    path: databases/postgres
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: databases
-  syncPolicy:
-    automated:
-      prune: false # Don't auto-delete databases
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: cloudnativepg-barman-plugin
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    chart: plugin-barman-cloud
-    repoURL: https://cloudnative-pg.github.io/charts
-    targetRevision: 0.6.0
-    helm:
-      releaseName: plugin-barman-cloud
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: cnpg-system
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
----
-# databases/postgres/production-cluster.yaml
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: production-db
-  namespace: databases
+  name: my-postgres-cluster
+  namespace: postgres-db
 spec:
-  instances: 2
-
-  # PostgreSQL version
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.14
-
-  # Storage configuration
+  instances: 2 # Number of database instances
+  primaryUpdateMethod: switchover # Update strategy for the primary node
   storage:
-    size: 1Gi
-    storageClass: gp3-encrypted
-
-  # Resource allocation
-  resources:
-    requests:
-      memory: 1Gi
-      cpu: "1"
-    limits:
-      memory: 2Gi
-      cpu: "2"
-
-  # PostgreSQL configuration
-  postgresql:
-    parameters:
-      max_connections: "200"
-      shared_buffers: 1GB
-      effective_cache_size: 3GB
-      work_mem: 16MB
-      maintenance_work_mem: 256MB
-      wal_buffers: 16MB
-      max_wal_size: 2GB
-
-  # Automated backup configuration
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters:
-        barmanObjectName: production-db-backups
-
-  # High availability settings
-  minSyncReplicas: 1
-  maxSyncReplicas: 1
-
-  # Pod anti-affinity for spreading across nodes
-  affinity:
-    enablePodAntiAffinity: true
-    topologyKey: kubernetes.io/hostname
+  size: 1Gi # Storage size for persistent volumes
+  # storageClass: longhorn
