@@ -26,3 +26,5 @@ spec:
       prune: true
       selfHeal: true
     createNamespace: true
+    syncOptions:
+      - replace=true
