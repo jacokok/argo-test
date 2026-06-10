@@ -13,6 +13,8 @@ spec:
     helm:
       skipCrds: true
       values: |
+        crds:
+          create: false
         cluster:
           enabled: true
           name: my-postgresql
