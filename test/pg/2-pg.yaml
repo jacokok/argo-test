@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudnative-pg
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: cloudnative-pg
+    repoURL: https://cloudnative-pg.github.io/charts
+    targetRevision: 0.23.0
+    # Helm values allow us to inject the database resource directly through the chart
+    helm:
+      values: |
+        cluster:
+          enabled: true
+          name: my-postgresql
+          instances: 3
+          storage:
+            size: 1Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cnpg-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    createNamespace: true
