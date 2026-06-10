@@ -8,7 +8,7 @@ spec:
   source:
     chart: cloudnative-pg
     repoURL: https://cloudnative-pg.github.io/charts
-    targetRevision: 1.29.1
+    targetRevision: 0.28.2
     # Helm values allow us to inject the database resource directly through the chart
     helm:
       values: |
