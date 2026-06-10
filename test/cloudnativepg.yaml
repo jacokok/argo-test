@@ -1,28 +1,29 @@
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: cluster-example
-  namespace: default
-spec:
-  instances: 3
-  storage:
-    size: 1Gi
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cnpg
+  name: cloudnative-pg
   namespace: argocd
 spec:
-  destination:
-    namespace: default
-    server: https://kubernetes.default.svc
-  source:
-    path: argocd-sync
-    repoURL: https://github.com/proventa/cloudnativepg-with-gitops.git
-    targetRevision: HEAD
   project: default
+  source:
+    chart: cloudnative-pg
+    repoURL: https://cloudnative-pg.github.io/charts
+    targetRevision: 0.23.0 # It's best practice to pin the chart version
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cnpg-system
   syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
-    automated: {} # Uncomment for auto-sync
+    automated:
+      prune: true
+      selfHeal: true
+    createNamespace: true
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: my-postgresql
+  namespace: cnpg-system
+spec:
+  instances: 3 # Creates a highly available 3-node cluster
+  storage:
+    size: 1Gi # k3s will automatically provision this using its default local-path storage
