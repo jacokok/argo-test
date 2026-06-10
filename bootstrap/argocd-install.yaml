@@ -1,0 +1,7 @@
+# bootstrap/argocd-install.yaml
+# We use a Kustomization or remote include to keep it simple.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+resources:
+  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
