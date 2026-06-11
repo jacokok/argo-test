@@ -1,20 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
-  namespace: argocd
+  name: postgres
+  namespace: postgres
 spec:
   project: default
   source:
     repoURL: https://github.com/jacokok/argo-test
     targetRevision: HEAD
-    path: argocd
+    path: postgres
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: argocd
+    namespace: postgres
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - ServerSideApply=true
