@@ -6,10 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: "https://github.com/argoproj/argo-cd.git"
-    targetRevision: stable
-    # targetRevision: v2.12.3
-    path: manifests
+    repoURL: https://github.com/jacokok/argo-test
+    targetRevision: HEAD
+    path: argocd
   destination:
     server: "https://kubernetes.default.svc"
     namespace: argocd
@@ -17,30 +16,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - ServerSideApply=true
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: argocd-server-ingressroute
-  namespace: argocd
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`k3s`)
-      kind: Rule
-      services:
-        - name: argocd-server
-          port: 443
-          scheme: https
-          serversTransport: argocd-transport
----
-apiVersion: traefik.io/v1alpha1
-kind: ServersTransport
-metadata:
-  name: argocd-transport
-  namespace: argocd
-spec:
-  insecureSkipVerify: true
