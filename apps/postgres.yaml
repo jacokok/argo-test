@@ -1,16 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: postgres-operator
+  name: postgres
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
     repoURL: https://github.com/jacokok/argo-test
     targetRevision: HEAD
-    path: postgres/operator
+    path: postgres
   destination:
     server: "https://kubernetes.default.svc"
     namespace: postgres
