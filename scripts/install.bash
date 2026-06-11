@@ -10,7 +10,6 @@ sed -i 's/127.0.0.1/k3s/g' ~/.kube/config && sed -i 's/localhost/k3s/g' ~/.kube/
 chmod 600 ~/.kube/config
 kubectl cluster-info
 
-kubectl create namespace argocd
 kubectl apply --server-side -k https://github.com/jacokok/argo-test.git/bootstrap
 
 # Get default password
