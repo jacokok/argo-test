@@ -2,12 +2,16 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: cloudnative-pg-operator
   namespace: postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
     - argoproj.io/resources-finalizer
 spec:
