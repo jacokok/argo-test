@@ -1,14 +1,18 @@
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: postgres
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: cloudnative-pg-operator
-  namespace: argocd
+  namespace: postgres
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: argocd
+    namespace: postgres
     server: https://kubernetes.default.svc
   project: default
   source:
