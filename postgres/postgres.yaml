@@ -9,7 +9,7 @@ metadata:
   name: cloudnative-pg-operator
   namespace: postgres
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - argoproj.io/resources-finalizer
 spec:
   destination:
     namespace: postgres
