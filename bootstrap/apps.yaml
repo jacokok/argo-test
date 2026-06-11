@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: argocd
+  name: apps
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: apps
   namespace: argocd
   finalizers:
     - argoproj.io/resources-finalizer

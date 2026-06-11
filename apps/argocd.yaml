@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/jacokok/argo-test
     targetRevision: HEAD
-    path: apps
+    path: argocd
   destination:
     server: "https://kubernetes.default.svc"
     namespace: argocd
