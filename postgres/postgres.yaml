@@ -25,6 +25,7 @@ spec:
     syncOptions:
       - ServerSideApply=true
       - ApplyOutOfSyncOnly=true
+      - CreateNamespace=true
   info:
     - name: "Documentation: "
       value: "https://cloudnative-pg.io/documentation/current/"
