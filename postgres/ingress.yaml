@@ -9,5 +9,5 @@ spec:
   routes:
     - match: HostSNI(`*`) # Raw TCP without TLS requires a wildcard matching all traffic
       services:
-        - name: pg-cluster-new-10-rw # Your CNPG primary service name
+        - name: pg-cluster-new-12-rw # Your CNPG primary service name
           port: 5432
