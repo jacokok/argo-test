@@ -14,7 +14,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-cluster-new
+  name: pg-cluster-new-2
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -24,11 +24,12 @@ spec:
     size: 1Gi
   bootstrap:
     initdb:
-      database: club
-      owner: club
       import:
-        type: microservice
+        type: monolith
         databases:
+          - club
+          - keycloak
+        roles:
           - club
         source:
           externalCluster: club
