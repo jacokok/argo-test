@@ -14,11 +14,11 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-cluster-new-9
+  name: pg-cluster-new-10
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  instances: 1
+  instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:18
   postgresql:
     parameters:
@@ -31,8 +31,6 @@ spec:
     initdb:
       postInitSQL:
         - CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-      owner: club
-      database: club
       import:
         type: monolith
         databases:
@@ -41,9 +39,9 @@ spec:
           - "*"
         source:
           externalCluster: club
-        # pgRestoreExtraOptions:
-        #   - "--no-owner"
-        #   - "--no-privileges"
+        pgRestoreExtraOptions:
+          - "--no-owner"
+          - "--no-privileges"
   externalClusters:
     - name: club
       connectionParameters:
