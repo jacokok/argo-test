@@ -14,7 +14,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-cluster-new-6
+  name: pg-cluster-new-7
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -38,7 +38,6 @@ spec:
     initdb:
       postInitSQL:
         - CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-        - CREATE EXTENSION IF NOT EXISTS pg_cron;
       import:
         type: monolith
         databases:
