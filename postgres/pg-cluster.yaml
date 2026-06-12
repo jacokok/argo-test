@@ -20,10 +20,13 @@ metadata:
 spec:
   instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:18
-  # postgresql:
-  #   shared_preload_libraries:
-  #     - pg_stat_statements
-  #     - pg_cron
+  postgresql:
+    shared_preload_libraries:
+      - pg_cron
+    parameters:
+      pg_stat_statements.max: "10000"
+      pg_stat_statements.track: all
+      cron.database_name: "postgres"
   storage:
     size: 1Gi
   managed:
@@ -33,9 +36,9 @@ spec:
         login: true
   bootstrap:
     initdb:
-      # postInitSQL:
-      #   - CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-      #   - CREATE EXTENSION IF NOT EXISTS pg_cron;
+      postInitSQL:
+        - CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+        - CREATE EXTENSION IF NOT EXISTS pg_cron;
       import:
         type: monolith
         databases:
