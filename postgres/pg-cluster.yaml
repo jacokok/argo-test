@@ -14,11 +14,11 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-cluster-new-10
+  name: pg-cluster-new-11
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  instances: 2
+  instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:18
   postgresql:
     parameters:
@@ -46,9 +46,9 @@ spec:
           - "*"
         source:
           externalCluster: club
-        pgRestoreExtraOptions:
-          - "--no-owner"
-          - "--no-privileges"
+        # pgRestoreExtraOptions:
+        #   - "--no-owner"
+        #   - "--no-privileges"
   externalClusters:
     - name: club
       connectionParameters:
