@@ -15,6 +15,8 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: pg-cluster-new
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:18
@@ -40,4 +42,4 @@ spec:
         dbname: club
       password:
         name: cluster-club-superuser
-        key: club
+        key: password
