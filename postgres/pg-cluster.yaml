@@ -27,6 +27,13 @@ spec:
       cron.database_name: "postgres"
   storage:
     size: 1Gi
+  managed:
+    roles:
+      - name: club
+        ensure: present
+        login: true
+        passwordSecret:
+          name: pg-cluster-new-10-club
   bootstrap:
     initdb:
       postInitSQL:
