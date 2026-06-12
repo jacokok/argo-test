@@ -14,7 +14,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-cluster-new-4
+  name: pg-cluster-new-5
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -44,6 +44,9 @@ spec:
           - "*"
         source:
           externalCluster: club
+        pgRestoreExtraOptions:
+          - "--no-owner"
+          - "--no-privileges"
   externalClusters:
     - name: club
       connectionParameters:
