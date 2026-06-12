@@ -14,7 +14,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-cluster-new-7
+  name: pg-cluster-new-8
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
