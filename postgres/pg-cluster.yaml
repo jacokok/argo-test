@@ -24,15 +24,14 @@ spec:
     size: 1Gi
   bootstrap:
     initdb:
+      database: club
+      owner: club
       import:
         type: microservice
         databases:
           - club
         source:
           externalCluster: club
-        #postImportApplicationSQL:
-        #- |
-        #  INSERT YOUR SQL QUERIES HERE
   externalClusters:
     - name: club
       connectionParameters:
