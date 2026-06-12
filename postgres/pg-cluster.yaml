@@ -14,7 +14,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-cluster-new-11
+  name: pg-cluster-new-12
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -38,6 +38,7 @@ spec:
     initdb:
       postInitSQL:
         - CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+        - CREATE ROLE club WITH LOGIN PASSWORD 'club';
       import:
         type: monolith
         databases:
