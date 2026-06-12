@@ -10,3 +10,34 @@ spec:
 
   storage:
     size: 1Gi
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg-cluster-new
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  storage:
+    size: 1Gi
+  bootstrap:
+    initdb:
+      import:
+        type: microservice
+        databases:
+          - club
+        source:
+          externalCluster: club
+        #postImportApplicationSQL:
+        #- |
+        #  INSERT YOUR SQL QUERIES HERE
+  externalClusters:
+    - name: club
+      connectionParameters:
+        # Use the correct IP or host name for the source database
+        host: doink-pc
+        user: club
+        dbname: club
+      password:
+        name: cluster-club-superuser
+        key: club
