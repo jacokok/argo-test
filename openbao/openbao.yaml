@@ -4,7 +4,7 @@ metadata:
   name: openbao-app
   namespace: argocd
 spec:
-  # project: openbao
+  project: default
   destination:
     server: "https://argocd:6443"
     namespace: argocd
