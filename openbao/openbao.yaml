@@ -1,21 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: openbao
+  name: openbao-app
   namespace: argocd
 spec:
-  project: default
+  # project: openbao
   destination:
-    server: https://kubernetes.default.svc
-    namespace: openbao
-  source:
-    repoURL: https://openbao.github.io/openbao-helm
-    targetRevision: "0.28.*"
-    chart: openbao
+    server: "https://argocd:6443"
+    namespace: argocd
+
   syncPolicy:
-    retry:
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m
-      limit: 5
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+    automated:
+      prune: true
+      selfHeal: true
+
+  source:
+    repoURL: "https://openbao.github.io/openbao-helm"
+    chart: openbao
+    targetRevision: 0.28.3
