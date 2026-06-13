@@ -8,7 +8,7 @@ spec:
   # project: openbao
   destination:
     server: https://argocd:6443
-    namespace: openbao
+    namespace: argocd
 
   syncPolicy:
     syncOptions:
@@ -28,7 +28,7 @@ spec:
   # project: openbao
   destination:
     server: https://argocd:6443
-    namespace: openbao
+    namespace: argocd
 
   syncPolicy:
     syncOptions:
