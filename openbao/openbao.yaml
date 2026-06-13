@@ -1,4 +1,3 @@
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -7,7 +6,7 @@ metadata:
 spec:
   # project: openbao
   destination:
-    server: https://argocd:6443
+    server: "https://kubernetes.default.svc"
     namespace: argocd
 
   syncPolicy:
@@ -27,7 +26,7 @@ metadata:
 spec:
   # project: openbao
   destination:
-    server: https://argocd:6443
+    server: "https://kubernetes.default.svc"
     namespace: argocd
 
   syncPolicy:
